@@ -8,5 +8,6 @@ namespace DotNetAssessment.Models
         {
         }
         public DbSet<login> login { get; set; }
+        public DbSet<Product> Product { get; set; }
     }
 }
