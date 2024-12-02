@@ -41,6 +41,27 @@ namespace DotNetAssessment.Migrations
 
                     b.ToTable("login");
                 });
+
+            modelBuilder.Entity("DotNetAssessment.Models.Product", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ProductDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Product");
+                });
 #pragma warning restore 612, 618
         }
     }

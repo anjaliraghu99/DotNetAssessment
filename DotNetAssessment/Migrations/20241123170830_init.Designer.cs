@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DotNetAssessment.Migrations
 {
     [DbContext(typeof(DataDbContext))]
-    [Migration("20241120122038_init")]
+    [Migration("20241123170830_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,27 @@ namespace DotNetAssessment.Migrations
                     b.HasKey("id");
 
                     b.ToTable("login");
+                });
+
+            modelBuilder.Entity("DotNetAssessment.Models.Product", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ProductDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Product");
                 });
 #pragma warning restore 612, 618
         }
