@@ -1,67 +1,139 @@
 ﻿@model DotNetAssessment.Models.Product
-
-@if (ViewBag.DataAction == "Create")
-{
-    <div class="row">
+<div class="container mt-5">
+    <div class="row justify-content-center">
         <div class="col-md-4">
-            <form asp-controller="Product" asp-action="ManageProduct">
-               @*  <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
-                <div class="form-group">
-                    <label asp-for="Id" class="control-label"></label>
-                    <input asp-for="Id" class="form-control" />
-@*                     <span asp-validation-for="Id" class="text-danger"></span>
- *@                </div>
-                <div class="form-group">
-                    <label asp-for="ProductName" class="control-label"></label>
-                    <input asp-for="ProductName" class="form-control" />
-                    <span asp-validation-for="ProductName" class="text-danger"></span>
+            <div class="card">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>@(ViewBag.DataAction == "Create" ? "Create Product" : "Edit Product")</h4>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Price" class="control-label"></label>
-                    <input asp-for="Price" class="form-control" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
+                <div class="card-body">
+
+                    @if (ViewBag.DataAction == "Create")
+                    {
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form asp-controller="Product" asp-action="ManageProduct">
+                                    @*  <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+                                    <div class="form-group">
+                                        <label asp-for="Id" class="control-label"></label>
+                                        <input asp-for="Id" class="form-control" />
+                                        @*                     <span asp-validation-for="Id" class="text-danger"></span>
+                                    *@
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="ProductName" class="control-label"></label>
+                                        <input asp-for="ProductName" class="form-control" />
+                                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Price" class="control-label"></label>
+                                        <input asp-for="Price" class="form-control" />
+                                        <span asp-validation-for="Price" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="ProductDescription" class="control-label"></label>
+                                        <input asp-for="ProductDescription" class="form-control" />
+                                        <span asp-validation-for="ProductDescription" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label"> Category</label>
+                                        <input asp-for="ProductCategory" id="ProductCategory" class="form-control" type="text">
+                                        <span asp-validation-for="ProductCategory" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label"> Value</label>
+                                        <input asp-for="ProductValue" id="ProductValue" class="form-control" type="text">
+                                        <span asp-validation-for="ProductValue" class="text-danger"></span>
+                                    </div>
+                                    <input type="hidden" name="DataAction" value="@ViewBag.DataAction" />
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </form>
+                            </div>
+                        </div>
+                    }
+
+                    @if (ViewBag.DataAction == "Edit")
+                    {
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form asp-controller="Product" asp-action="ManageProduct">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group">
+                                        @*                     <label asp-for="Id" class="control-label"></label>
+                                    *@                    <input asp-for="Id" type="hidden" value="@Model.Id" class="form-control" readonly />
+                                        @*                     <span asp-validation-for="Id"  class="text-danger"></span>
+                                    *@
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="ProductName" class="control-label"></label>
+                                        <input asp-for="ProductName" value="@Model.ProductName" class="form-control" />
+                                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Price" class="control-label"></label>
+                                        <input asp-for="Price" value="@Model.Price" class="form-control" />
+                                        <span asp-validation-for="Price" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="ProductDescription" class="control-label"></label>
+                                        <input asp-for="ProductDescription" value="@Model.ProductDescription" class="form-control" />
+                                        <span asp-validation-for="ProductDescription" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label"> Category</label>
+                                        <input asp-for="ProductCategory" id="ProductCategory" class="form-control" type="text">
+                                        <span asp-validation-for="ProductCategory" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label"> Value</label>
+                                        <input asp-for="ProductValue" id="ProductValue" class="form-control" type="text">
+                                        <span asp-validation-for="ProductValue" class="text-danger"></span>
+                                    </div>
+                                    <input type="hidden" name="DataAction" value="@ViewBag.DataAction" />
+
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </form>
+                            </div>
+                        </div>
+                    }
                 </div>
-                <div class="form-group">
-                    <label asp-for="ProductDescription" class="control-label"></label>
-                    <input asp-for="ProductDescription" class="form-control" />
-                    <span asp-validation-for="ProductDescription" class="text-danger"></span>
-                </div>
-                <input type="hidden" name="DataAction" value="@ViewBag.DataAction" />
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </form>
+            </div>
         </div>
     </div>
-}
-@if (ViewBag.DataAction == "Edit")
-{
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-controller="Product" asp-action="ManageProduct">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-@*                     <label asp-for="Id" class="control-label"></label>
- *@                    <input asp-for="Id" type="hidden" value="@Model.Id" class="form-control" readonly />
-@*                     <span asp-validation-for="Id"  class="text-danger"></span>
- *@                </div>
-                <div class="form-group">
-                    <label asp-for="ProductName" class="control-label"></label>
-                    <input asp-for="ProductName" value="@Model.ProductName" class="form-control" />
-                    <span asp-validation-for="ProductName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Price" class="control-label"></label>
-                    <input asp-for="Price" value="@Model.Price" class="form-control" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ProductDescription" class="control-label"></label>
-                    <input asp-for="ProductDescription" value="@Model.ProductDescription" class="form-control" />
-                    <span asp-validation-for="ProductDescription" class="text-danger"></span>
-                </div>
-                <input type="hidden" name="DataAction" value="@ViewBag.DataAction" />
+</div>
 
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </form>
-        </div>
-    </div>
-}
+
+<script>
+    $(document).ready(function () {
+        // $.get("/Product/GetCategoryData?categoryName=" + "Value", function (data) {
+        //     console.log(data); // Check the structure of the response
+        // });
+        $("#ProductCategory").kendoDropDownList({
+            optionLabel: "Select an category",
+            dataValueField: "id",
+            dataTextField: "categoryName",
+            dataSource: {
+                transport: {
+                    read: {
+                        dataType: "json",
+                        url: "/Product/GetCategoryData?categoryName=" + "Value",
+                    }
+                }
+            }
+        }).data("kendoDropDownList");
+
+        $("#ProductValue").kendoDropDownList({
+            optionLabel: "Select an Author",
+            dataValueField: "id",
+            dataTextField: "value",
+            dataSource: {
+                transport: {
+                    read: {
+                        dataType: "json",
+                        url: "/Product/GetCategoryData?categoryName=" + "Category",
+                    }
+                }
+            }
+        }).data("kendoDropDownList");
+    });
+</script>

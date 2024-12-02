@@ -24,7 +24,7 @@ namespace DotNetAssessment.Controllers
             return View(data);
         }
         
-        public IActionResult ManageData(string DataAction,string id)
+        public IActionResult ManageData(string DataAction,int id)
         {
             ViewBag.DataAction = DataAction;
             if(DataAction == "Edit")
@@ -90,8 +90,43 @@ namespace DotNetAssessment.Controllers
             return Ok();
 
         }
+        [HttpGet]
+        public ActionResult GetCategoryData(string categoryName)
+        {
+            var data = new List<string>();
+            switch (categoryName)
+            {
+                case "Category":
+                    var Quentitydata = Context.Quentity
+                                .Select(quentity => new
+                                {
+                                    quentity.Id,
+                                    quentity.value
+                                })
+                                .Distinct()
+                                .ToList();
+                    return Json(Quentitydata);
+                   
+                case "Value":
+                    var categorydata = Context.Category
+                                .Select(category => new
+                                {
+                                    category.Id,
+                                    category.CategoryName
+                                })
+                                .Distinct()
+                                .ToList();
+                    return Json(categorydata);
+                   
 
-       
+            }
+
+
+
+            return Ok();
+        }
+
+
     }
 }
 

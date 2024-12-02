@@ -21,6 +21,22 @@ namespace DotNetAssessment.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("DotNetAssessment.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("DotNetAssessment.Models.login", b =>
                 {
                     b.Property<int>("id")
@@ -44,23 +60,46 @@ namespace DotNetAssessment.Migrations
 
             modelBuilder.Entity("DotNetAssessment.Models.Product", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ProductCategory")
+                        .HasColumnType("text");
+
                     b.Property<string>("ProductDescription")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ProductName")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProductValue")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("DotNetAssessment.Models.Quentity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("value")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Quentity");
                 });
 #pragma warning restore 612, 618
         }
