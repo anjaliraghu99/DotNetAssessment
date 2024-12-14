@@ -6,6 +6,7 @@ namespace DotNetAssessment.Models
     {
         public DataDbContext(DbContextOptions<DataDbContext> options) : base(options)
         {
+
         }
         public DbSet<login> login { get; set; }
         public DbSet<Product> Product { get; set; }

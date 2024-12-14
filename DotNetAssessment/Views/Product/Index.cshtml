@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
     <title>Product List</title>
 </head>
 <body>
@@ -34,10 +32,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>@Html.DisplayNameFor(model => model.ProductName)</th>
-                    <th>@Html.DisplayNameFor(model => model.ProductDescription)</th>
-                    <th>@Html.DisplayNameFor(model => model.Price)</th>
-                    <th>Action</th>
+                    <th>ProductName</th>
+                    <th>ProductDescription</th>
+                    <th>ProductCategory</th>
+                    <th>Avilavlity</th>
+                    <th>Price</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody> 
@@ -46,6 +46,8 @@
                     <tr>
                         <td>@Html.DisplayFor(modelItem => product.ProductName)</td>
                         <td>@Html.DisplayFor(modelItem => product.ProductDescription)</td>
+                        <td>@Html.DisplayFor(modelItem => product.ProductCategory)</td>
+                        <td>@Html.DisplayFor(modelItem => product.ProductValue)</td>
                         <td>@Html.DisplayFor(modelItem => product.Price)</td>
                         
                         <td>
@@ -82,7 +84,7 @@
     function deleteProduct(dataAction,productId){
         debugger
         $.ajax({
-            url: "Product/ManageProduct?DataAction=" + dataAction + "&id=" + productId,
+            url: "ManageProduct?DataAction=" + dataAction + "&id=" + productId,
             type: 'POST',
             cache: false,
             success: function (response) {

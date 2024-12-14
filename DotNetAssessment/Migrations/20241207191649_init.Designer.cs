@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DotNetAssessment.Migrations
 {
     [DbContext(typeof(DataDbContext))]
-    [Migration("20241202190050_inkl")]
-    partial class inkl
+    [Migration("20241207191649_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,11 +47,19 @@ namespace DotNetAssessment.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("password")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("username")
+                    b.Property<string>("phoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
 

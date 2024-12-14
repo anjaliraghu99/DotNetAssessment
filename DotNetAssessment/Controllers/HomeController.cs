@@ -1,22 +1,63 @@
 ﻿using DotNetAssessment.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace DotNetAssessment.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly DataDbContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(DataDbContext dbContext)
         {
-            _logger = logger;
+            _dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public IActionResult index()
         {
             return View();
         }
+        public IActionResult Login()
+        {
+            return View();
+        }
+        public IActionResult Register()
+        {
+            return View();
+        }
+        public IActionResult RegisterData(login logins)
+        {
+
+            if (logins != null)
+            {
+
+                var data = _dbContext.login.FirstOrDefault(x => x.id == logins.id);
+                if (data == null)
+                {
+                    _dbContext.login.Add(logins);
+                    _dbContext.SaveChanges();
+                    return RedirectToAction("Login");
+                }
+                return Ok();
+
+            }
+            return Ok();
+
+        }
+        public IActionResult LoginData(login logins)
+        {
+            var data = _dbContext.login.FirstOrDefaultAsync(x => x.Email == logins.Email && x.password == logins.password);
+            if (data != null)
+            {
+                return RedirectToAction("Index","Product");
+
+            }
+            return RedirectToAction("Login");
+
+        }
+         
 
         public IActionResult Privacy()
         {

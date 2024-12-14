@@ -1,6 +1,9 @@
 ﻿using DotNetAssessment.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Npgsql.Internal.TypeHandlers.FullTextSearchHandlers;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using static System.Reflection.Metadata.BlobBuilder;
 
@@ -29,7 +32,7 @@ namespace DotNetAssessment.Controllers
             ViewBag.DataAction = DataAction;
             if(DataAction == "Edit")
             {
-                var data = Context.Product.FirstOrDefault(x => x.Id == id);
+                var data =  Context.Product.FirstOrDefault(x => x.Id == id);
                 if (data != null)
                 {
                     return View(data);
@@ -38,36 +41,71 @@ namespace DotNetAssessment.Controllers
             return View();
 
         }
-        [HttpPost]
-        public IActionResult ManageProduct(string DataAction, int id, Product product)
+        public async Task<Tuple<string, bool>> ValidateData(Product product)
         {
+            if (string.IsNullOrEmpty(product.ProductName))
+            {
+                var message = "Name should not be null or empty";
+                return Tuple.Create(message, false);
+
+            }
+            if (string.IsNullOrEmpty(product.Price.ToString()))
+            {
+                var message = "Price should not be null or empty";
+                return Tuple.Create(message, false);
+
+            }
+            if (string.IsNullOrEmpty(product.ProductCategory))
+            {
+                var message = "ProductCategory should not be null or empty";
+                return Tuple.Create(message, false);
+
+            }
+            return Tuple.Create("Product is valid", true);
+         }
+
+        
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> ManageProduct(string DataAction, Product product)
+        {
+
             if (DataAction == "Create")
             {
-                if (product.Id != null)
+
+                if (product != null)
                 {
+                    var (message, isValid) =  await ValidateData(product);
+                    if (isValid == false) {
+                        ViewBag.message = message;
+                        ViewBag.DataAction = DataAction;  
+
+                        return View("ManageData", product);
+                    }
+
                     var data = Context.Product.FirstOrDefault(x => x.Id == product.Id);
                     if (data == null)
                     {
                         Context.Product.Add(product);
-                        Context.SaveChanges();
+                        await Context.SaveChangesAsync();
                         TempData["SuccessMessage"] = "Data created successfully!";
                         return RedirectToAction("Index");
-                        
-
                     }
 
                 }
             }
             if (DataAction == "Edit")
             {
-                if (product.Id != null)
+                if (product!=null)
                 {
                     var data = Context.Product.FirstOrDefault(x => x.Id == product.Id);
                     if (data != null)
                     {
                         Context.Entry(data).CurrentValues.SetValues(product);
 
-                        Context.SaveChanges();
+                        await Context.SaveChangesAsync();
                         TempData["SuccessMessage"] = "Data Updated successfully!";
                         return RedirectToAction("Index");
                     }
@@ -77,54 +115,56 @@ namespace DotNetAssessment.Controllers
 
             if (DataAction == "Delete")
             {
-               
+                if(product != null)
+                {
                     var data = Context.Product.FirstOrDefault(x => x.Id == product.Id);
                     if (data != null)
                     {
                         Context.Product.Remove(data);
-                        Context.SaveChanges();
+                        await Context.SaveChangesAsync();
                         return RedirectToAction("Index");
                     }
                 }
-         
-            return Ok();
-
-        }
-        [HttpGet]
-        public ActionResult GetCategoryData(string categoryName)
-        {
-            var data = new List<string>();
-            switch (categoryName)
-            {
-                case "Category":
-                    var Quentitydata = Context.Quentity
-                                .Select(quentity => new
-                                {
-                                    quentity.Id,
-                                    quentity.value
-                                })
-                                .Distinct()
-                                .ToList();
-                    return Json(Quentitydata);
-                   
-                case "Value":
-                    var categorydata = Context.Category
-                                .Select(category => new
-                                {
-                                    category.Id,
-                                    category.CategoryName
-                                })
-                                .Distinct()
-                                .ToList();
-                    return Json(categorydata);
-                   
 
             }
 
+            return BadRequest("Invalid Input! Something Went Wrong.");
 
-
-            return Ok();
         }
+
+
+        [HttpGet]
+        public ActionResult GetCategoryData(string categoryName)
+        {
+            switch (categoryName)
+            {
+                case "Category":
+                    var categorydata = Context.Quentity
+                                .Select(x => new
+                                {
+                                    x.Id,
+                                    x.value
+                                }).Distinct().ToList();
+                    return Json(categorydata);
+
+                case "Value":
+                    var Quentitydata  = Context.Category
+                                .Select(x => new
+                                {
+                                    x.Id,
+                                    x.CategoryName
+                                }).Distinct().ToList();
+                   return Json(Quentitydata);
+                   
+
+            }
+            return BadRequest("Invalid Input! Something Went Wrong.");
+        }
+
+
+    
+        
+       
 
 
     }
